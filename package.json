@@ -1,0 +1,70 @@
+{
+  "name": "CloudSquish",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "The best way to organize your folders",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Sailsmakr",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^33.2.1",
+    "electron-builder": "^23.6.0"
+  },
+  "build": {
+    "appId": "CloudSquish",
+    "productName": "CloudSquish",
+    "files": [
+      "src/**/*",
+      "index.html",
+      "./app_icon.svg",
+      "index.js",
+      "splash.html",
+      "package.json",
+      "build/**/*",
+      "server/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "./server/",
+        "to": "server/"
+      }
+    ],
+    "directories": {
+      "output": "build"
+    },
+    "mac": {
+      "category": "public.app-category.business",
+      "icon": "build/cloudSquish.ico.icns"
+    },
+    "win": {
+      "icon": "cloudSquish.ico",
+      "target": "nsis",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "linux": {
+      "icon": "assets/icons/linux/cloudSquish.ico.png",
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "runAfterFinish": true,
+      "perMachine": false,
+      "include": "installer.nsh"
+    }
+  },
+  "dependencies": {
+    "check-disk-space": "^3.4.0",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "uninstall": "^0.0.0"
+  }
+}

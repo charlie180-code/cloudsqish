@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gusa</title>
+  
+  <!-- Bootstrap styles -->
+  <link rel="stylesheet" href="./src/styles/bootstrap.min.css">
+  <link rel="stylesheet" href="./assets/bootstrap-icons/bootstrap-icons.css">
+  
+  <!-- App styles -->
+  <link rel="stylesheet" href="./src/styles/app.css">
+
+  <!-- Favicons -->
+  <link rel="apple-touch-icon" href="./gus_logo.svg" sizes="180x180">
+  <link rel="icon" href="./gus_logo.svg" sizes="16x16" type="image/png">
+
+  <!-- Bootstrap icons -->
+  <link rel="stylesheet" href="./src/assets/icons/font/bootstrap-icons.min.css">
+</head>
+<body>
+  <div class="container-fluid vh-100">
+    <div class="row h-100">
+      <aside class="col-12 col-md-3 col-lg-2 bg-light p-3 d-flex flex-column h-100">
+        <a href="javascript:void(0)" class="d-flex align-items-center mb-3 text-decoration-none text-dark nav-link">
+          <img src="./src/assets/img/gus_logo.jpg" alt="Gusa" class="img-logo">
+        </a>      
+        <hr>
+        <nav class="flex-grow-1">
+          <ul class="nav flex-column">
+            <li class="nav-item mb-3">
+              <button class="w-100" id="CreateNewFolderButton" data-bs-toggle="modal" data-bs-target="#createFolderModal">
+                <i class="bi-plus pe-none me-2"></i>
+                Nouveau Dossier
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="tab active mb-3" data-tab="home">
+                <i class="bi-house pe-none me-2"></i>
+                Accueil
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="tab active mb-3" data-tab="archive">
+                <i class="bi-archive pe-none me-2"></i>
+                Archives
+              </button>
+            </li>
+            <!--
+              <li class="nav-item">
+              <button class="tab active mb-3" data-tab="notes">
+                <i class="bi-journal-text pe-none me-2"></i>
+                Notes
+              </button>
+            </li>
+            -->
+            <li class="nav-item mb-3">
+              <button class="tab active" data-tab="trash">
+                <i class="bi-trash pe-none me-2"></i>
+                Corbeille
+              </button>
+            </li>
+          </ul>
+        </nav>
+        <hr>
+        <!-- 
+          <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>mdo</strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#" data-tab="settings">Paramètres</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Déconnexion</a></li>
+          </ul>
+        </div>
+        -->
+      </aside>
+
+      <main class="col-12 col-md-9 col-lg-10 p-4">
+        
+        <header class="main-header">
+        </header>        
+        <!--
+        
+        -->
+      
+      
+        
+        
+
+
+        <div id="content" class="bg-white rounded shadow-sm p-3 mt-5">
+          <div class="d-flex justify-content-center align-items-center" style="min-height: 200px;">
+            <div class="spinner-border text-secondary" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+        </div>
+      
+        
+        <div class="my-5"></div>
+        <footer class="bg-light py-3 px-4 mt-auto d-flex justify-content-between align-items-center">
+          <span class="text-muted">Powered by sailsmakr</span>
+          <nav class="d-flex gap-3">
+            <a href="wwww.sailsmakr.com/privacy" class="text-muted text-decoration-none">Privacy</a>
+            <a href="wwww.sailsmakr.com/contact-us" class="text-muted text-decoration-none">Contact Us</a>
+            <a href="wwww.sailsmakr.com//about" class="text-muted text-decoration-none">About</a>
+          </nav>
+        </footer>
+
+      </main>
+
+
+    </div>
+  </div>
+
+  <!-- main script for dynamic content loading -->
+  <script type="module" src="./src/main.js"></script>
+
+  <!-- async scripts -->
+  <script type="module" src="./src/js/async/GetMyFolders.js"></script>
+  <script type="module" src="./src/js/async/GetMyFiles.js"></script>
+
+  <!-- <script type="module" src="./renderer.js"></script> -->
+
+  
+  <!-- bootstrap libs & jQuery -->
+  <script type="module" src="./src/js/lib/core/bootstrap.min.js"></script>
+  <script type="module" src="./src/js/lib/core/bootstrap.bundle.min.js"></script>
+  <script type="module" src="./src/js/lib/core/jquery-3.7.1.js"></script>
+  <script type="module" src="./src/js/lib/core/popper.min.js"></script>
+</body>
+</html>

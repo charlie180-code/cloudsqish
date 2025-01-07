@@ -1,0 +1,280 @@
+@import url('./fonts.css');
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+#CreateNewFolderButton{
+    font-size: 0.85rem;
+}
+.scrollable-container {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+button.w-100 {
+    padding: 12px 20px;
+    background-color: #f8f9fa;
+    border:solid 1px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.w-100 i {
+    margin-right: 8px;
+}
+
+.tools-button{
+    font-size: 1.25rem;
+}
+
+.img-logo {
+    width: 100px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.tab.active {
+    background-color: #edebeb;
+    color: #212529 !important;
+}
+
+.tab {
+    color: #495057;
+    border: none;
+    background: none;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 20px;
+}
+
+.tab:hover {
+    background-color: #dfdddd;
+    color: #000;
+}
+
+header {
+    background-color: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+  
+header .input-group input {
+    border-radius: 0 4px 4px 0;
+}
+  
+header .input-group span {
+    border-radius: 4px 0 0 4px;
+}
+  
+header select {
+    border-radius: 8px;
+}
+  
+header button {
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+  
+header button:hover {
+    background-color: #e2e6ea;
+    color: #495057;
+}
+  
+
+#folders-container {
+    margin-top: 20px;
+    border-radius: 8px;
+}
+  
+  .table th,
+  .table td {
+    vertical-align: middle;
+}
+  
+.table th i,
+  .table td i {
+  font-size: 1.2rem;
+}
+  
+.table .text-warning {
+    color: #f0ad4e !important;
+}
+.context-menu {
+    position: absolute;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 5px;
+    z-index: 1000;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    padding: 10px 0;
+    color: #fff;
+}
+
+.context-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.context-menu ul li {
+    padding: 10px 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #fff;
+}
+
+.context-menu ul li:hover {
+    background-color: #555;
+}
+
+.context-menu ul li i {
+    margin-right: 10px;
+    color: #fff;
+}
+.editable {
+    background-color: #f8f9fa;
+    border: 1px dashed #007bff;
+}
+
+.d-none{
+    display: none !important;
+}
+
+.highlighted {
+    font-weight: bold;
+    background-color: #f6fb00;
+}
+
+strong{
+    font-family: 'Poppins-Bold', sans-serif;
+}
+
+#folders-container-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+#folders-container {
+    flex-grow: 1;
+}
+#folder-details-container {
+    flex-shrink: 0;
+    width: 300px;
+    min-width: 300px;
+    height: 100vh;
+    overflow-y:auto;
+    border: solid 1px #000;
+    border-radius: 0.5em;
+    padding: 1em 1em;
+}
+#folder-details-placeholder {
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    text-align: center;
+}
+tr{
+    cursor: pointer;
+}
+
+#folder-details ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#folder-details li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#folder-details li i {
+    margin-right: 10px;
+}
+
+.file-link-cell {
+    display: flex;
+    align-items: center;
+}
+
+.folder-info-cell {
+    position: relative;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #6c757d;
+    padding-top: 10px;
+}
+
+.file-link-cell a {
+    display: flex;
+    align-items: center;
+}
+
+.me-2 {
+    margin-right: 8px;
+}
+
+.file-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: 5px;
+}
+
+.text-end {
+    text-align: end;
+}
+
+.main-header{
+    background-image: url('../assets/img/main_bg.png');
+    background-position: center;
+    color: white;
+    font-size: 1.2rem;
+    padding: 2em 1em;
+}
+/* Reduce the height of progress bars */
+.progress {
+    height: 15px !important; /* Reduced height */
+}
+
+.progress-bar {
+    border-radius: 0.25rem;
+    height: 100%;
+}
+
+/* Change the color for used and remaining space */
+.progress-bar.bg-primary {
+    background-color: #007bff !important; /* Blue for used space (Documents) */
+}
+
+.progress-bar.bg-success {
+    background-color: #28a745 !important; /* Green for used space (Music) */
+}
+
+.progress-bar.bg-info {
+    background-color: #17a2b8 !important; /* Blue for used space (Images) */
+}
+
+.progress-bar.bg-danger {
+    background-color: #dc3545 !important; /* Red for used space (Videos) */
+}
+
+.progress-bar.bg-warning {
+    background-color: #ffc107 !important; /* Yellow for used space (3D Files) */
+}
+
+/* Set different colors for the remaining space */
+.progress-bar.bg-secondary {
+    background-color: #747474 !important; /* Gray for remaining space */
+}

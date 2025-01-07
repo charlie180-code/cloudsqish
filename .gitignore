@@ -1,0 +1,6 @@
+*pyc
+*__pycache__
+server/venv
+node_modules
+server/.env
+task.todo
