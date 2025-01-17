@@ -78,7 +78,7 @@ export default function initFolderScript() {
             if (rowElement) editFolder(currentFolderId, rowElement);
         });
 
-        document.getElementById("attachFilesBtn")?.addEventListener("click", () => {
+        document.getElementById("attachFilesBtn").addEventListener("click", () => {
             if (currentFolderId) {
                 attachFilesToFolder(currentFolderId);
             }
@@ -155,7 +155,7 @@ export default function initFolderScript() {
     
                     if (file.url) {
                         fileItem.innerHTML = `
-                            <a href="${file.url}" style="text-decoration:none">
+                            <a href="http://127.0.0.1:5001/archive/v1/download-file/${file.id}" style="text-decoration:none">
                                 <i class="bi ${fileIconClass}"></i> ${file.name}
                             </a>
                         `;
@@ -448,9 +448,15 @@ export default function initFolderScript() {
     
         destinationFolder.innerHTML = `<option value="" disabled>Sélectionnez un dossier</option>`;
     
-        fetch(`http://127.0.0.1:5001/archive/v1/get-my-client-folders/${userId}`)
-            .then(response => response.json())
-            .then(folders => {
+        fetch(`http://127.0.0.1:5001/archive/v1/get-all-client-folders/${userId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to fetch folders");
+                }
+                return response.json();
+            })
+            .then(data => {
+                const folders = data.folders;
                 folders.forEach(folder => {
                     const option = document.createElement("option");
                     option.value = folder.id;
@@ -459,16 +465,17 @@ export default function initFolderScript() {
                 });
     
                 const folderOption = destinationFolder.querySelector(`option[value="${folderId}"]`);
-                if (folderOption) folderOption.selected = true;
-    
-                initAddFilesModal();
+                if (folderOption) {
+                    folderOption.selected = true;
+                }
     
                 addFileModal.show();
             })
             .catch(error => {
                 console.error("Error fetching folders for dropdown:", error);
+                alert("Une erreur s'est produite lors du chargement des dossiers.");
             });
-    };    
+    };
 
     document.getElementById("addFileForm")?.addEventListener("submit", async (event) => {
         event.preventDefault();
@@ -533,7 +540,6 @@ export default function initFolderScript() {
                 const errorData = await response.json();
                 throw new Error(errorData.error || "An unexpected error occurred.");
             }
-            await fetchFolders();
             window.location.reload();
         } catch (error) {
             console.error("Error deleting folder:", error);

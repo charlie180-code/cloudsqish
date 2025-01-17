@@ -18,6 +18,14 @@
   "build": {
     "appId": "CloudSquish",
     "productName": "CloudSquish",
+    "publish": {
+      "provider": "github",
+      "owner": "charlie180-code",
+      "repo": "",
+      "releaseType": "release",
+      "channel": "latest"
+    },
+    "copyright": "Copyright © 2025 Sailsmakr Softwares LLC",
     "files": [
       "src/**/*",
       "index.html",
@@ -39,15 +47,15 @@
     },
     "mac": {
       "category": "public.app-category.business",
-      "icon": "build/cloudSquish.ico.icns"
+      "icon": "build/cloudSquish.icns"
     },
     "win": {
-      "icon": "cloudSquish.ico",
+      "icon": "cloudSquish_256x256.ico",
       "target": "nsis",
       "artifactName": "${productName}-Setup-${version}.${ext}"
     },
     "linux": {
-      "icon": "assets/icons/linux/cloudSquish.ico.png",
+      "icon": "assets/icons/linux/cloudSquish_256x256.png",
       "target": "AppImage"
     },
     "nsis": {
@@ -62,7 +70,6 @@
     }
   },
   "dependencies": {
-    "check-disk-space": "^3.4.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "uninstall": "^0.0.0"

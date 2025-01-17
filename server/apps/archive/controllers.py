@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, redirect, url_for, flash, abort, make_response, current_app
+from flask import request, render_template, jsonify, current_app, send_file
 from datetime import datetime
 from flask_login import login_required, current_user
 from ..models.folder import Folder
@@ -78,8 +78,6 @@ def handle_user_client_folders(user_id):
         if not name:
             return jsonify({"error": "Le nom du dossier est requis", "field": "folderName"}), 400
 
-        if not client:
-            return jsonify({"error": "Nom du client est requis", "field": "folderClient"}), 400
 
         try:
             if archive_date:
@@ -113,6 +111,26 @@ def handle_user_client_folders(user_id):
         except Exception as e:
             db.session.rollback()
             return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+        
+
+@archive.route('/get-all-client-folders/<int:user_id>', methods=['GET'])
+def get_all_client_folders(user_id):
+    try:
+        folders = Folder.query.filter_by(user_id=user_id).all()
+        folder_data = [
+            {
+                "id": folder.id,
+                "name": folder.name,
+                "client": folder.client,
+                "created_at": folder.created_at.strftime('%Y-%m-%d'),
+                "unique_id": folder.unique_id,
+                "number": folder.folder_number,
+            }
+            for folder in folders
+        ]
+        return jsonify({"folders": folder_data}), 200
+    except Exception as e:
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
 @archive.route('/get-folder-details/<int:folder_id>', methods=['GET'])
@@ -127,6 +145,7 @@ def get_folder_details(folder_id):
         
         for file in files:
             file_details.append({
+                "id": file.id,
                 "name": file.label,
                 "file_type": file.filepath.split('.')[-1] if file.filepath else "unknown",
                 "url": file.filepath or None 
@@ -182,7 +201,7 @@ def attach_my_client_files(folder_id):
     if not folder:
         return jsonify({"error": "Folder not found"}), 404
 
-    folder_path = os.path.join(os.environ.get('ARCHIVE_STATIC_DIR'), folder.name)
+    folder_path = os.path.join(current_app.config['ARCHIVE_STATIC_DIR'], folder.name)
     os.makedirs(folder_path, exist_ok=True)
 
     try:
@@ -213,18 +232,16 @@ def attach_my_client_files(folder_id):
                 file_path = os.path.join(folder_path, file.filename)
                 file.save(file_path)
 
-                file_url = url_for('static', filename=os.path.join('uploads', folder.name, file.filename), _external=True)
-
                 new_entry = File(
                     label=label,
-                    filepath=file_url,
+                    filepath=file_path,
                     folder_id=folder.id,
                     uploaded_at=datetime.utcnow(),
                     user_id=1,
                     company_id=1
                 )
                 db.session.add(new_entry)
-                saved_entries.append({"label": label, "url": file_url})
+                saved_entries.append({"label": label, "url": file_path})
 
         db.session.commit()
 
@@ -236,7 +253,7 @@ def attach_my_client_files(folder_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-
+    
 
 @archive.route('/delete-folder/<int:folder_id>', methods=['DELETE'])
 def delete_folder(folder_id):
@@ -245,7 +262,7 @@ def delete_folder(folder_id):
         return jsonify({"error": "Folder not found"}), 404
 
     try:
-        folder_path = os.path.join(os.environ.get('ARCHIVE_STATIC_DIR'), folder.name)
+        folder_path = os.path.join(current_app.config['ARCHIVE_STATIC_DIR'], folder.name)
         if os.path.exists(folder_path):
             for root, dirs, files in os.walk(folder_path, topdown=False):
                 for file in files:
@@ -264,53 +281,6 @@ def delete_folder(folder_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"error": f"An error occurred while deleting the folder: {str(e)}"}), 500
-    
-
-@archive.route('/get-files-by-user/<int:user_id>', methods=['GET'])
-def get_files_by_user(user_id):
-    files = File.query.filter_by(user_id=user_id).all()
-    
-    if not files:
-        return jsonify([])
-
-    files_data = []
-    
-    for file in files:
-        folder = Folder.query.get(file.folder_id)
-        
-
-        file_data = {
-            "id": file.id,
-            "label": file.label,
-            "filepath": file.filepath,
-            "uploaded_at": file.uploaded_at,
-            "folder_name": folder.name,
-            "folder_id": folder.unique_id,
-            "client_name": folder.client
-        }
-        files_data.append(file_data)
-
-    return jsonify(files_data)
-
-@archive.route('/delete-file/<int:file_id>', methods=['DELETE'])
-def delete_file(file_id):
-    file = File.query.get(file_id)
-    if not file:
-        return jsonify({"error": "File not found"}), 404
-
-    try:
-        if file.filepath:
-            file_path = os.path.join(os.environ.get('ARCHIVE_STATIC_DIR', ''), file.filepath)
-            if os.path.exists(file_path):
-                os.remove(file_path)
-
-        db.session.delete(file)
-        db.session.commit()
-
-        return jsonify({"message": "fichier correctement supprimé"}), 200
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 
 @archive.route('/search-user-folders-or-files/<int:user_id>', methods=['GET'])
@@ -342,3 +312,15 @@ def search_user_folders_or_files(user_id):
         results.append(folder_data)
 
     return jsonify(results)
+
+
+@archive.route('/download-file/<int:file_id>', methods=['GET'])
+def download_file(file_id):
+    file_entry = File.query.get(file_id)
+    if not file_entry or not file_entry.filepath:
+        return jsonify({"error": "File not found"}), 404
+
+    if not os.path.exists(file_entry.filepath):
+        return jsonify({"error": "File not found on the server"}), 404
+
+    return send_file(file_entry.filepath, as_attachment=True)

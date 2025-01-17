@@ -2,7 +2,7 @@ from flask import Flask
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from config import config
+from config import config, create_license_and_readme
 from flask_bootstrap import Bootstrap
 from flask_login import LoginManager
 from flask_oauthlib.client import OAuth
@@ -41,9 +41,6 @@ def create_app(development=True, template_folder='templates', static_folder='sta
 
     from .archive import archive as archive_blueprint
     app.register_blueprint(archive_blueprint, url_prefix='/archive/v1')
-
-    from .auth import auth as auth_blueprint
-    app.register_blueprint(auth_blueprint, url_prefix='/auth')
     
 
     with app.app_context():
@@ -52,5 +49,7 @@ def create_app(development=True, template_folder='templates', static_folder='sta
         Role.insert_roles()
 
     CORS(app)
+
+    create_license_and_readme()
 
     return app

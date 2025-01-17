@@ -3,18 +3,46 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def get_database_path(database_name="app.db"):
+def get_cloudsquish_path():
     """
-    Generate a writable path for the database file based on the OS.
-    The database will be stored in the 'Documents/sailsmakr folder inside the user's home directory.
+    Generate a writable path for the database and static files based on the OS.
+    The files will be stored in the 'Documents/cloudsquish' folder inside the user's home directory.
     """
     home_dir = os.path.expanduser("~")
-
-    documents_dir = os.path.join(home_dir, "Documents", "sailsmakr")
-
+    documents_dir = os.path.join(home_dir, "Documents", "cloudsquish")
     os.makedirs(documents_dir, exist_ok=True)
+    return documents_dir
 
-    return os.path.join(documents_dir, database_name)
+
+def get_database_path(database_name="app.db"):
+    """
+    Generate the path for the database file inside the 'Documents/cloudsquish' folder.
+    """
+    return os.path.join(get_cloudsquish_path(), database_name)
+
+
+
+def create_license_and_readme():
+    cloudsquish_path = get_cloudsquish_path()
+
+    # Create LICENSE file
+    license_text = """This software is a product of Sailsmakr. All rights reserved."""
+    with open(os.path.join(cloudsquish_path, "LICENSE"), "w") as f:
+        f.write(license_text)
+
+    # Create README.md file
+    readme_text = """# ClousdSquish Data Backup Guide
+
+    To back up your data:
+    1. Copy the entire 'cloudsquish' folder to an external storage device.
+    2. To restore, copy the folder back to the 'Documents' directory on your new machine.
+    3. Ensure the folder structure remains intact.
+
+    For support, contact support@sailsmakr.com.
+    """
+    with open(os.path.join(cloudsquish_path, "README.md"), "w") as f:
+        f.write(readme_text)
+
 
 
 class Config:
@@ -34,6 +62,7 @@ class Config:
     BABEL_SUPPORTED_LOCALES = ['en', 'fr', 'de', 'zh', 'ru', 'tr']
     BABEL_TRANSLATION_DIRECTORIES = './translations'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    ARCHIVE_STATIC_DIR = get_cloudsquish_path()
 
     @staticmethod
     def init_app(app):

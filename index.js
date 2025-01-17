@@ -1,11 +1,8 @@
-const { app, BrowserWindow, screen, ipcMain } = require('electron');
+const { app, BrowserWindow, screen } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
-const config = require('./config').default;
-
-const serverUrl = `${config.server.url}:${config.server.port}${config.server.urlPrefix}`;
-
+const { SERVER_URL } = require('./config.js');
 
 let mainWindow;
 let splash;
@@ -13,7 +10,7 @@ let serverProcess;
 
 function isServerRunning() {
     return new Promise((resolve) => {
-        http.get(`${serverUrl}/health`, (res) => {
+        http.get(`${SERVER_URL}/health`, (res) => {
             resolve(res.statusCode === 200);
         }).on('error', () => resolve(false));
     });
