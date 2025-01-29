@@ -1,4 +1,4 @@
-from flask import request, render_template, jsonify, current_app, send_file
+from flask import request, render_template, jsonify, current_app, send_file, make_response
 from datetime import datetime
 from flask_login import login_required, current_user
 from ..models.folder import Folder
@@ -13,6 +13,8 @@ from dotenv import load_dotenv
 import os
 from firebase_admin import storage
 from ..models.user import User, generate_password_hash
+import weasyprint
+
 
 load_dotenv()
 
@@ -324,3 +326,87 @@ def download_file(file_id):
         return jsonify({"error": "File not found on the server"}), 404
 
     return send_file(file_entry.filepath, as_attachment=True)
+
+
+
+@archive.route('/get-files-by-user/<int:user_id>', methods=['GET'])
+def get_files_by_user(user_id):
+    files = File.query.filter_by(user_id=user_id).all()
+    
+    if not files:
+        return jsonify([])
+
+    files_data = []
+    
+    for file in files:
+        folder = Folder.query.get(file.folder_id)
+        
+
+        file_data = {
+            "id": file.id,
+            "label": file.label,
+            "filepath": file.filepath,
+            "uploaded_at": file.uploaded_at,
+            "folder_name": folder.name,
+            "folder_id": folder.unique_id,
+            "client_name": folder.client
+        }
+        files_data.append(file_data)
+
+    return jsonify(files_data)
+
+
+
+@archive.route('/delete-file/<int:file_id>', methods=['DELETE'])
+def delete_file(file_id):
+    file = File.query.get(file_id)
+    if not file:
+        return jsonify({"error": "File not found"}), 404
+
+    try:
+        if file.filepath:
+            file_path = os.path.join(os.environ.get('ARCHIVE_STATIC_DIR', ''), file.filepath)
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+        db.session.delete(file)
+        db.session.commit()
+
+        return jsonify({"message": "fichier correctement supprimé"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
+    
+
+
+
+@archive.route('/generate-pdf-folders-list/<int:user_id>', methods=['GET'])
+def generate_pdf(user_id):
+    user = User.query.get(user_id)
+    
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+    
+    folders = Folder.query.filter_by(user_id=user_id).all()
+    
+    folder_data = [
+        {
+            "id": folder.id,
+            "name": folder.name,
+            "client": folder.client,
+            "created_at": folder.created_at.strftime('%Y-%m-%d'),
+            "unique_id": folder.unique_id,
+            "number": folder.folder_number
+        }
+        for folder in folders
+    ]
+    
+    html = render_template('reports/solopreneur/archives_report.html', folders=folder_data)
+    
+    pdf = weasyprint.HTML(string=html).write_pdf()
+    
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'inline; filename=folders_report.pdf'
+    
+    return response

@@ -155,7 +155,7 @@ export default function initFolderScript() {
     
                     if (file.url) {
                         fileItem.innerHTML = `
-                            <a href="http://127.0.0.1:5001/archive/v1/download-file/${file.id}" style="text-decoration:none">
+                            <a href="${file.url}" download style="text-decoration:none">
                                 <i class="bi ${fileIconClass}"></i> ${file.name}
                             </a>
                         `;
@@ -421,10 +421,12 @@ export default function initFolderScript() {
                 });
 
                 if (!response.ok) throw new Error("Failed to edit folder");
-                window.location.reload();
+                window.reloadActiveTab();
             } catch (error) {
                 console.error("Error updating folder:", error);
                 alert("An error occurred while updating the folder.");
+                window.reloadActiveTab();
+
             } finally {
                 nameCell.removeAttribute("contenteditable");
                 clientCell.removeAttribute("contenteditable");
@@ -525,28 +527,39 @@ export default function initFolderScript() {
     
 
     const deleteFolder = async (folderId) => {
-        if (!confirm("Etes vous sur de vouloir ce dossier ainsi que tous ses fichiers?")) return;
+        const confirmationModal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+        const confirmDeleteButton = document.getElementById("confirmDeleteButton");
     
-        const successModal = new bootstrap.Modal(document.getElementById("DeletesuccessModal"));
-        const errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
-        const errorModalBody = document.getElementById("errorModalBody");
+        confirmDeleteButton.onclick = async () => {
+            confirmationModal.hide();
     
-        try {    
-            const response = await fetch(`http://127.0.0.1:5001/archive/v1/delete-folder/${folderId}`, {
-                method: "DELETE",
-            });
+            try {
+                const response = await fetch(`http://127.0.0.1:5001/archive/v1/delete-folder/${folderId}`, {
+                    method: "DELETE",
+                });
     
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || "An unexpected error occurred.");
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "An unexpected error occurred.");
+                }
+    
+                const row = document.querySelector(`tr[data-folder-id="${folderId}"]`);
+                if (row) {
+                    row.remove();
+                }
+    
+                const successModal = new bootstrap.Modal(document.getElementById("DeletesuccessModal"));
+                successModal.show();
+            } catch (error) {
+                console.error("Error deleting folder:", error);
+                const errorModal = new bootstrap.Modal(document.getElementById("errorModal"));
+                const errorModalBody = document.getElementById("errorModalBody");
+                errorModalBody.textContent = error.message || "An unexpected error occurred while deleting the folder.";
+                errorModal.show();
             }
-            window.location.reload();
-        } catch (error) {
-            console.error("Error deleting folder:", error);
+        };
     
-            errorModalBody.textContent = error.message || "An unexpected error occurred while deleting the folder.";
-            errorModal.show();
-        }
+        confirmationModal.show();
     };
     
     const folderSearchInput = document.getElementById("folderSearchInput");

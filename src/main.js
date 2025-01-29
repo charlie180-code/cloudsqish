@@ -5,6 +5,8 @@ function initTabScript() {
     const tabs = document.querySelectorAll(".tab");
     const contentContainer = document.getElementById("content");
 
+    let activeTab = null;
+
     /**
      * @param tabName - The name of the tab to load.
      * @param clickedTab - The tab element that was clicked.
@@ -14,6 +16,8 @@ function initTabScript() {
 
         tabs.forEach((tab) => tab.classList.remove("active"));
         clickedTab.classList.add("active");
+
+        activeTab = clickedTab;
 
         try {
             const response = await fetch(`./src/(tabs)/${tabName}.html`);
@@ -48,6 +52,14 @@ function initTabScript() {
     if (defaultTab) {
         defaultTab.click();
     }
+
+    const reloadActiveTab = () => {
+        if (activeTab) {
+            activeTab.click();
+        }
+    };
+
+    window.reloadActiveTab = reloadActiveTab;
 }
 
 document.addEventListener("DOMContentLoaded", initTabScript);

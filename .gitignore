@@ -4,3 +4,7 @@ server/venv
 node_modules
 server/.env
 task.todo
+./server/build
+server/linux-venv/
+server/venv/
+server/dist/
