@@ -1,12 +1,10 @@
-# CloudSquish 🚀
+# CloudSquish
 
 > **The Ultimate Folder Archiving System** – A scalable, industry-specific file archiving solution. 
 
-![CloudSquish Banner](https://via.placeholder.com/1200x400?text=CloudSquish)  
-
 ---
 
-## 📌 Table of Contents
+## Table of Contents
 
 - [About CloudSquish](#about-cloudsquish)
 - [Features](#features)
@@ -18,33 +16,35 @@
 
 ---
 
-## 📜 About CloudSquish
+## About CloudSquish
 CloudSquish is a **SaaS-based** folder archiving system designed for secure document storage, intelligent organization, and scalable infrastructure.
 
 ---
 
-## ✨ Features
-✅ **Secure File Storage** with advanced encryption  
-✅ **Cloud & On-Prem Deployment** options  
-✅ **User Authentication (OAuth planned)**  
-✅ **Basic Folder Organization**  
-✅ **Manual Backup Support**  
+## Features
+- **Secure File Storage**
+- **Cloud & On-Prem Deployment** options  
+- **User Authentication (OAuth planned)**  
+- **Basic Folder Organization**  
+- **Manual Backup Support**  
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | **Technology** | **Purpose** |
 |--------------|------------|
 | ![Flask](https://img.shields.io/badge/-Flask-000?logo=flask) | Backend API |
 | ![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-336791?logo=postgresql) | Database |
-| ![Docker](https://img.shields.io/badge/-Docker-2496ED?logo=docker) | Containerization |
-| ![AWS S3](https://img.shields.io/badge/-AWS%20S3-232F3E?logo=amazonaws) | Cloud Storage (Planned) |
-| ![AWS Lambda](https://img.shields.io/badge/-AWS%20Lambda-FF9900?logo=awslambda) | Serverless Functions (Planned) |
-| ![Terraform](https://img.shields.io/badge/-Terraform-623CE4?logo=terraform) | Infrastructure as Code (Planned) |
-| ![Jenkins](https://img.shields.io/badge/-Jenkins-D24939?logo=jenkins) | CI/CD Automation (Planned) |
-| ![Ansible](https://img.shields.io/badge/-Ansible-EE0000?logo=ansible) | Configuration Management (Planned) |
-| ![Nginx](https://img.shields.io/badge/-Nginx-009639?logo=nginx) | Reverse Proxy |
+
+🔹 **Planned Technologies:**  *(To be added in future versions)*
+- Docker (Containerization)
+- AWS S3 (Cloud Storage)
+- AWS Lambda (Serverless Functions)
+- Terraform (Infrastructure as Code)
+- Jenkins (CI/CD Automation)
+- Ansible (Configuration Management)
+- Nginx (Reverse Proxy)
 
 ---
 
@@ -55,13 +55,13 @@ CloudSquish is a **SaaS-based** folder archiving system designed for secure docu
 🔗 **Source Code:**
 - [Backend (Flask API)](https://github.com/yourrepo/cloudsquish-api)
 - [Frontend (VanillaJS)](https://github.com/yourrepo/cloudsquish-ui)
-- [Docker & Nginx Configs](https://github.com/yourrepo/cloudsquish-deploy)
+- [Deployment Configs](https://github.com/yourrepo/cloudsquish-deploy)
 
 ---
 
-## 🚀 Roadmap
+## Roadmap
 
-### ✅ **Current Features**
+### **Current Features**
 - Local file archiving
 - Simple REST API with Flask
 - Basic folder organization
@@ -83,11 +83,11 @@ CloudSquish is a **SaaS-based** folder archiving system designed for secure docu
 ## 🛠 Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourrepo/cloudsquish-api.git
-cd cloudsquish-api
+git clone https://github.com/charlie180-code/cloudsquish.git
+cd cloudsquish
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r server/requirements.txt
 
 # Run the Flask app
 flask run
@@ -95,5 +95,5 @@ flask run
 
 ---
 
-## 📜 License
-MIT License © 2025 [Your Name / Company]
+## License
+© 2025 Bytesprint Robotics LLC
