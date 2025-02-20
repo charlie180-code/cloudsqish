@@ -6,10 +6,11 @@
   "scripts": {
     "start": "electron .",
     "build": "electron-builder",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "publish": "electron-builder --publish always"
   },
   "keywords": [],
-  "author": "Sailsmakr",
+  "author": "Bytesprint Robotics LLC",
   "license": "ISC",
   "devDependencies": {
     "electron": "^33.2.1",
@@ -21,7 +22,7 @@
     "publish": {
       "provider": "github",
       "owner": "charlie180-code",
-      "repo": "",
+      "repo": "cloudsqish",
       "releaseType": "release",
       "channel": "latest"
     },
@@ -29,12 +30,16 @@
     "files": [
       "src/**/*",
       "index.html",
+      "config.js",
+      "preload.js",
       "./app_icon.svg",
       "index.js",
       "splash.html",
       "package.json",
       "build/**/*",
-      "server/**/*"
+      "server/dist/cloudsqish.exe",
+      "server/run.py",
+      "server/.env"
     ],
     "extraResources": [
       {
@@ -50,7 +55,7 @@
       "icon": "build/cloudSquish.icns"
     },
     "win": {
-      "icon": "cloudSquish_256x256.ico",
+      "icon": "cloudSquish_logo.ico",
       "target": "nsis",
       "artifactName": "${productName}-Setup-${version}.${ext}"
     },
@@ -70,6 +75,7 @@
     }
   },
   "dependencies": {
+    "electron-updater": "^6.3.9",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.4",
     "uninstall": "^0.0.0"

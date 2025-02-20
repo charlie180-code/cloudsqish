@@ -1,8 +1,9 @@
-const { app, BrowserWindow, screen } = require('electron');
+const { app, BrowserWindow, screen, ipcMain } = require('electron');
 const path = require('path');
 const { spawn } = require('child_process');
 const http = require('http');
 const { SERVER_URL } = require('./config.js');
+const { autoUpdater } = require('electron-updater');
 
 let mainWindow;
 let splash;
@@ -92,8 +93,8 @@ async function createMainWindow() {
 function startServer() {
     const isDev = !app.isPackaged;
     const serverPath = isDev
-        ? path.join(__dirname, 'server', 'cloudsquish.exe')
-        : path.join(process.resourcesPath, 'server', 'cloudsquish.exe');
+        ? path.join(__dirname, 'server/dist', 'cloudsquish.exe')
+        : path.join(process.resourcesPath, 'server/dist', 'cloudsquish.exe');
 
     const workingDirectory = isDev
         ? path.join(__dirname, 'server')
@@ -125,6 +126,31 @@ function stopServer() {
     }
 }
 
+function checkForUpdates() {
+    autoUpdater.checkForUpdatesAndNotify();
+}
+
+autoUpdater.on('checking-for-update', () => {
+    console.log('Checking for updates...');
+});
+
+autoUpdater.on('update-available', (info) => {
+    console.log('Nouvelle mise à jour disponible', info);
+});
+
+autoUpdater.on('update-not-available', () => {
+    console.log('Aucune mise à jour disponible');
+});
+
+autoUpdater.on('error', (err) => {
+    console.error('Error during update:', err);
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+    console.log('Update downloaded:', info);
+    autoUpdater.quitAndInstall();
+});
+
 app.on('ready', async () => {
     createSplashWindow();
 
@@ -132,6 +158,8 @@ app.on('ready', async () => {
         startServer();
         await waitForServer();
         await createMainWindow();
+
+        checkForUpdates();
     } catch (err) {
         console.error("Error while waiting for server:", err);
     }

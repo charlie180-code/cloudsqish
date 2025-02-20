@@ -9,14 +9,14 @@ def get_cloudsquish_path():
     The files will be stored in the 'Documents/cloudsquish' folder inside the user's home directory.
     """
     home_dir = os.path.expanduser("~")
-    documents_dir = os.path.join(home_dir, "Documents", "cloudsquish")
+    documents_dir = os.path.join(home_dir, "Documents", "Cloudsquish")
     os.makedirs(documents_dir, exist_ok=True)
     return documents_dir
 
 
 def get_database_path(database_name="app.db"):
     """
-    Generate the path for the database file inside the 'Documents/cloudsquish' folder.
+    Generate the path for the database file inside the 'Documents/Cloudsquish' folder.
     """
     return os.path.join(get_cloudsquish_path(), database_name)
 
@@ -26,7 +26,7 @@ def create_license_and_readme():
     cloudsquish_path = get_cloudsquish_path()
 
     # Create LICENSE file
-    license_text = """This software is a product of Sailsmakr. All rights reserved."""
+    license_text = """This software is a product of Bytesprint. All rights reserved."""
     with open(os.path.join(cloudsquish_path, "LICENSE"), "w") as f:
         f.write(license_text)
 
@@ -38,7 +38,7 @@ def create_license_and_readme():
     2. To restore, copy the folder back to the 'Documents' directory on your new machine.
     3. Ensure the folder structure remains intact.
 
-    For support, contact support@sailsmakr.com.
+    For support, contact support@bytesprint.com.
     """
     with open(os.path.join(cloudsquish_path, "README.md"), "w") as f:
         f.write(readme_text)
