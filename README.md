@@ -53,9 +53,8 @@ CloudSquish is a **SaaS-based** folder archiving system designed for secure docu
 🔗 **Live Demo:** [Click here](#) *(Coming soon!)*
 
 🔗 **Source Code:**
-- [Backend (Flask API)](https://github.com/yourrepo/cloudsquish-api)
-- [Frontend (VanillaJS)](https://github.com/yourrepo/cloudsquish-ui)
-- [Deployment Configs](https://github.com/yourrepo/cloudsquish-deploy)
+- [Backend (Flask API)](https://github.com/charlie180-code/cloudsqish/tree/main/server)
+- [Frontend (VanillaJS)](https://github.com/charlie180-code/cloudsqish/tree/main/src)
 
 ---
 
@@ -80,7 +79,7 @@ CloudSquish is a **SaaS-based** folder archiving system designed for secure docu
 
 ---
 
-## 🛠 Installation
+## Installation
 ```bash
 # Clone the repository
 git clone https://github.com/charlie180-code/cloudsquish.git
