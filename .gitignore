@@ -7,5 +7,6 @@ task.todo
 server/linux-venv/
 server/venv/
 server/dist/
+build/** */
 build
-server/build
+server/build/** */
